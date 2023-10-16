@@ -13,7 +13,7 @@ app.use(function (req, res, next) {
   );
   next();
 });
-const port = 2410;
+var port =process.env.PORT||2410;
 app.listen(port, () => console.log(`Node app listening on port ${port}!`));
 
 const { Client }=require("pg");
