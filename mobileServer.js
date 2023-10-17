@@ -13,7 +13,7 @@ app.use(function (req, res, next) {
   );
   next();
 });
-var port =process.env.PORT||2410;
+const port = 2410;
 app.listen(port, () => console.log(`Node app listening on port ${port}!`));
 
 const { Client }=require("pg");
@@ -37,24 +37,25 @@ app.get("/mobiles",function(req,res){
     let conditions=[];
     let values=[];
     if(brand){
-        let brandArr=brand?brand.split(","):[];
+        let brandArr=brand.split(",");
         conditions.push(`brand = ANY($1)`);
         values.push(brandArr);
     }
     if(ram){
-        let RAMarr=ram?ram.split(","):[];
+        let RAMarr=ram.split(",");
         conditions.push(`ram = ANY($1)`);
         values.push(RAMarr);
     }
     if(rom){
-        ROMarr=rom?rom.split(","):[];
+        ROMarr=rom.split(",");
         conditions.push(`rom = ANY($1)`);
         values.push(ROMarr);
     }
     
     if(conditions.length > 0){
-        let sql=`SELECT * FROM mobiles WHERE (${conditions.join("AND")})`;
-        client.query(sql,values,function(err,result){
+        let sql=`SELECT * FROM mobiles WHERE ` + conditions.join(" AND ");
+        console.log(sql);
+        client.query(sql,[values],function(err,result){
             if(err) res.status(404).send("No Data Found");
             else res.send(result.rows);
         })
@@ -69,7 +70,7 @@ app.get("/mobiles",function(req,res){
 app.get("/mobiles/:name",function(req,res){
     let name=req.params.name;
     let sql=`SELECT * FROM mobiles WHERE name=$1`;
-    client.query(sql,name,function(err,result){
+    client.query(sql,[name],function(err,result){
         if(err) res.status(404).send("No Data Found");
         else res.send(result.rows);
     })
