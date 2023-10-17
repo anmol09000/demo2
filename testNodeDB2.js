@@ -22,7 +22,7 @@ const client = new Client({
   password: "62653903220906",
   database: "postgres",
   port: 5432,
-  host: "db.gjzcvxpbdbslbpezuedu.supabase.co",
+  host: "db.xmrxwivrxbqrqwcznjat.supabase.co",
   ssl: { rejectUnauthorized: false },
 });
 client.connect(function (error) {
@@ -101,7 +101,7 @@ app.get("/employees/designation/:desg", function (req, res) {
 
 app.post("/newEmp", function (req, res) {
   let body = Object.values(req.body);
-  const sql = `INSERT INTO employees(empCode, name, department, designation, salary, gender) VALUES ($1, $2, $3, $4, $5, $6)`;
+  const sql = `INSERT INTO employees(empcode, name, department, designation, salary, gender) VALUES ($1, $2, $3, $4, $5, $6)`;
   client.query(sql, body, function (err, result) {
     if (err) {
       res.status(404).send(err);
