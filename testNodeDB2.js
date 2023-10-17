@@ -42,21 +42,22 @@ app.get("/employees", function (req, res) {
   let values = [];
 
   if (department) {
-    conditions.push("department = $1");
+    conditions.push(`department = ANY($1)`);
     values.push(department);
   }
   if (designation) {
-    conditions.push("designation = $2");
+    conditions.push(`designation = ANY($1)`);
     values.push(designation);
   }
   if (gender) {
-    conditions.push("gender = $3");
+    conditions.push(`gender = ANY($1)`);
     values.push(gender);
   }
 
   if (conditions.length > 0) {
-    const sql = `SELECT * FROM employees WHERE ${conditions.join(" AND ")}`;
-    client.query(sql, values, function (err, result) {
+    const sql = `SELECT * FROM employees WHERE ` +conditions.join(" AND ");
+    console.log(sql);
+    client.query(sql, [values], function (err, result) {
       if (err) {
         res.status(404).send("No Data Found");
       } else {
